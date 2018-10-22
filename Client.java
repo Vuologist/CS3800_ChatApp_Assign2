@@ -1,10 +1,12 @@
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class Client
-{
-    public static void main(String[] args) throws IOException
-    {
+import java.util.Random;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
         Socket sock = new Socket("127.0.0.1", 3000);
 
         DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
@@ -12,9 +14,12 @@ public class Client
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+        Random rand = new Random();
+
         System.out.print("Enter username: ");
-        String name = br.readLine();
-        System.out.println("Welcome " + name+ "!!!");
+        //String name = br.readLine();
+        String name = "hi" + rand.nextInt(5);
+        System.out.println("Welcome " + name + "!!!");
         System.out.println("Connecting...");
         dos.writeUTF(name);
 
@@ -24,10 +29,19 @@ public class Client
         Thread sendMessage = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true) {
-                    try{
+                Date date = new Date();
+                SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy'@'hh:mm:ssa");
+
+                while (true) {
+                    try {
                         String msg = br.readLine();
-                        dos.writeUTF(msg);
+                        String msgOut = ft.format(date) + " : " + name + " : " + msg;
+                        dos.writeUTF(msgOut);
+                        if (msg.toLowerCase().equals("quit")) {
+                            sock.close();
+                            System.out.println("Logged Out");
+                            System.exit(0);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -38,10 +52,10 @@ public class Client
         Thread readMessage = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){
+                while (true) {
                     try {
                         String msg = dis.readUTF();
-                        System.out.print(msg);
+                        System.out.println(msg);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
