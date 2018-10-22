@@ -3,8 +3,6 @@ import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import java.util.Random;
-
 public class Client {
     public static void main(String[] args) throws IOException {
         Socket sock = new Socket("127.0.0.1", 3000);
@@ -14,17 +12,16 @@ public class Client {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Random rand = new Random();
-
         System.out.print("Enter username: ");
-        //String name = br.readLine();
-        String name = "hi" + rand.nextInt(5);
+        String name = br.readLine();
         System.out.println("Welcome " + name + "!!!");
         System.out.println("Connecting...");
         dos.writeUTF(name);
 
         String connected = dis.readUTF();
         System.out.println(connected);
+        System.out.println("Enter quit/QUIT to exit...");
+        System.out.println("You may begin messaging...");
 
         Thread sendMessage = new Thread(new Runnable() {
             @Override

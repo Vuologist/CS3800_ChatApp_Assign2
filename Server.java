@@ -71,7 +71,7 @@ class ClientHandler implements Runnable {
 
                 boolean flag = (received.split(" ")[4].toLowerCase().equals("quit"));
                 if(flag) {
-                    System.out.println("executing");
+                    //System.out.println("executing");
                     String clientRemove = received.split(" ")[2];
                     System.out.println("Client quit: " + clientRemove);
                     this.isloggedin = false;
@@ -95,12 +95,12 @@ class ClientHandler implements Runnable {
                     mc.dos.writeUTF(received);
                 }
 
-                String clients = "";
+                /* String clients = "";
                 for (ClientHandler mc : Server.clientList) {
                     clients = clients + ", " + mc.name ;
                 }
                 System.out.println(clients);
-                clients = "";
+                clients = ""; */
             }
 
             this.dis.close();
